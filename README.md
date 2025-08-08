@@ -22,4 +22,4 @@ ros2 launch joint_mover j2_mover.launch.py
 ```
 
 ## Description
-Moves J2 joint in a sine wave pattern with 10-degree amplitude.
+Moves J2 joint in a sine wave pattern with 15-degree amplitude.

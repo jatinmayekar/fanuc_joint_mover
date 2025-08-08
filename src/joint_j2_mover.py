@@ -58,7 +58,7 @@ class J2Mover(Node):
             steps = 200
             start_pos = self.initial_positions.copy()
 
-            amplitude = math.radians(30.0)  # 30 degrees amplitude
+            amplitude = math.radians(15.0)  # 15 degrees amplitude
 
             for i in range(steps + 1):
                 t = i * duration / steps
