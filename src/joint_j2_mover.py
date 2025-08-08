@@ -53,19 +53,12 @@ class J2Mover(Node):
 
             traj = JointTrajectory()
             traj.joint_names = self.joint_names
-
-            # Find joint indices by name
-            try:
-                j2_index = self.joint_names.index("J2")
-            except ValueError as e:
-                self.get_logger().warn(f"Joint not found: {e}")
-                return
-
-            duration = 5.0
+            j_index = 0
+            duration = 10.0
             steps = 200
             start_pos = self.initial_positions.copy()
 
-            amplitude = math.radians(10.0)  # 10 degrees amplitude
+            amplitude = math.radians(30.0)  # 30 degrees amplitude
 
             for i in range(steps + 1):
                 t = i * duration / steps
@@ -73,21 +66,21 @@ class J2Mover(Node):
                 point = JointTrajectoryPoint()
                 point.positions = start_pos.copy()
 
-                # Sine wave trajectory for J2
+                # Sine wave trajectory
                 angle = amplitude * (1 - math.cos(phase))
-                point.positions[j2_index] = start_pos[j2_index] + angle
+                point.positions[j_index] = start_pos[j_index] + angle
 
                 # Calculate velocity (derivative of sine wave)
                 velocity = amplitude * (2 * math.pi / duration) * math.sin(phase)
                 point.velocities = [0.0] * len(point.positions)  # Initialize all velocities to 0
-                point.velocities[j2_index] = velocity  # Set J2 velocity
+                point.velocities[j_index] = velocity  # Set velocity
 
                 point.time_from_start.sec = int(t)
                 point.time_from_start.nanosec = int((t - int(t)) * 1e9)
                 traj.points.append(point)
 
             self.publisher_.publish(traj)
-            self.get_logger().info("Published J2 trajectory.")
+            self.get_logger().info("Published trajectory.")
             self.sent = True
             self.timer.cancel()
             self.set_io_signal(1, True)  # Set DO[1] to True
@@ -98,42 +91,6 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
-
-"""     def send_trajectory(self):
-        if self.sent:
-            return
-        if not self.initial_positions:
-            self.get_logger().info("Waiting for initial joint states...")
-            return
-        if len(self.initial_positions) < 2:
-            self.get_logger().error("J2 not available (need at least 2 joints).")
-            self.sent = True
-            self.timer.cancel()
-            return
-
-        traj = JointTrajectory()
-        traj.joint_names = self.joint_names
-
-        duration = 5.0
-        steps = 200
-        start_pos = self.initial_positions.copy()
-
-        for i in range(steps + 1):
-            t = i * duration / steps
-            point = JointTrajectoryPoint()
-            point.positions = start_pos.copy()
-            # Move J2 relative to its initial value: +10 -> -10 degrees
-            point.positions[0] = start_pos[0] + math.radians(10.0 - 20.0 * i / steps)
-            point.velocities = [0.0] * len(point.positions)
-            point.time_from_start.sec = int(t)
-            point.time_from_start.nanosec = int((t - int(t)) * 1e9)
-            traj.points.append(point)
-
-        self.publisher_.publish(traj)
-        self.get_logger().info("Published J2 trajectory from +10 to -10 degrees.")
-        self.sent = True
-        self.timer.cancel()
- """
 
 if __name__ == "__main__":
     main()
