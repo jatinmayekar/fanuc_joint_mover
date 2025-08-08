@@ -1,6 +1,11 @@
+# ROS 2 specific
+build/
+install/
+log/
+
+# ROS 1 legacy (keep if you might have mixed environments)
 devel/
 logs/
-build/
 bin/
 lib/
 msg_gen/
@@ -25,27 +30,32 @@ devel_isolated/
 *.dox
 *.wikidoc
 
-# eclipse stuff
+# IDE stuff
 .project
 .cproject
-
-# qcreator stuff
-CMakeLists.txt.user
-
-srv/_*.py
-*.pcd
-*.pyc
+.vscode/
 qtcreator-*
 *.user
+CMakeLists.txt.user
 
-/planning/cfg
-/planning/docs
-/planning/src
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
 
+# Generated files
+srv/_*.py
+*.pcd
+
+# Temporary files
 *~
-
-# Emacs
 .#*
 
 # Catkin custom files
 CATKIN_IGNORE
+
+# OS specific
+.DS_Store
+Thumbs.db
