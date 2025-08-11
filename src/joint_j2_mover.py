@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import math
 import rclpy
+import time
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
@@ -83,7 +84,13 @@ class J2Mover(Node):
             self.get_logger().info("Published trajectory.")
             self.sent = True
             self.timer.cancel()
+
+            # Delay IO signal to wait for RMIInstance
+            self.io_timer = self.create_timer(2.0, self.delayed_io_signal)
+        
+    def delayed_io_signal(self):
             self.set_io_signal(1, True)  # Set DO[1] to True
+            self.io_timer.cancel()  # Cancel the timer after one execution
 
 def main(args=None):
     rclpy.init(args=args)
