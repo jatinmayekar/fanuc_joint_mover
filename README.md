@@ -9,7 +9,7 @@ ROS 2 package for controlling joint movements on Fanuc robots.
 
 ## Installation
 ```bash
-cd ~/your_ws/src
+cd ~/ws_fanuc/src
 git clone https://github.com/jatinmayekar/fanuc_joint_mover.git
 cd ..
 colcon build --packages-select joint_mover
