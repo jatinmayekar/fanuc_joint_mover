@@ -17,6 +17,7 @@ find_package(fanuc_msgs REQUIRED)
 install(
   PROGRAMS
     src/joint_j2_mover.py
+    src/joint_j2_mover_cont.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
