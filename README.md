@@ -2,6 +2,9 @@
 
 ROS 2 package for controlling joint movements on Fanuc robots.
 
+## Description
+Moves J2 joint in a sine wave pattern with 15-degree amplitude and sets a DO 1 to True.
+
 ## Dependencies
 - rclpy
 - trajectory_msgs
@@ -16,10 +19,13 @@ colcon build --packages-select joint_mover
 source install/setup.bash
 ```
 
-## Usage
+## Usage - single J2 joint motion
 ```bash
 ros2 launch joint_mover j2_mover.launch.py
 ```
 
-## Description
-Moves J2 joint in a sine wave pattern with 15-degree amplitude and sets a DO 1 to True.
+## Usage - cyclic J2 joint motion
+```bash
+ros2 launch joint_mover j2_mover_cont.launch.py
+```
+
