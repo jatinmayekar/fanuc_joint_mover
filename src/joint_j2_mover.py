@@ -23,21 +23,21 @@ class J2Mover(Node):
             JointTrajectory, "/joint_trajectory_controller/joint_trajectory", 10
         )
         self.timer = self.create_timer(1.0, self.send_trajectory)
-        self.set_io_client = self.create_client(SetBoolIO, '/fanuc_gpio_controller/set_bool_io')
-        while not self.set_io_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.io_request = SetBoolIO.Request()
+        # self.set_io_client = self.create_client(SetBoolIO, '/fanuc_gpio_controller/set_bool_io')
+        # while not self.set_io_client.wait_for_service(timeout_sec=1.0):
+        #     self.get_logger().info('service not available, waiting again...')
+        # self.io_request = SetBoolIO.Request()
 
-    def set_io_signal(self, index, value):
-        self.io_request.io_type.type = 'DO'
-        self.io_request.index = index
-        self.io_request.value = value
-        self.future = self.set_io_client.call_async(self.io_request)
-        rclpy.spin_until_future_complete(self, self.future)
-        if self.future.result() is not None:
-            self.get_logger().info('Result: %r' % self.future.result())
-        else:
-            self.get_logger().error('Service call failed %r' % (self.future.exception(),))
+    # def set_io_signal(self, index, value):
+    #     self.io_request.io_type.type = 'DO'
+    #     self.io_request.index = index
+    #     self.io_request.value = value
+    #     self.future = self.set_io_client.call_async(self.io_request)
+    #     rclpy.spin_until_future_complete(self, self.future)
+    #     if self.future.result() is not None:
+    #         self.get_logger().info('Result: %r' % self.future.result())
+    #     else:
+    #         self.get_logger().error('Service call failed %r' % (self.future.exception(),))
 
     def joint_state_callback(self, msg: JointState):
         self.joint_names = list(msg.name)
@@ -86,11 +86,11 @@ class J2Mover(Node):
             self.timer.cancel()
 
             # Delay IO signal to wait for RMIInstance
-            self.io_timer = self.create_timer(2.0, self.delayed_io_signal)
+            # self.io_timer = self.create_timer(2.0, self.delayed_io_signal)
         
-    def delayed_io_signal(self):
-            self.set_io_signal(1, True)  # Set DO[1] to True
-            self.io_timer.cancel()  # Cancel the timer after one execution
+    # def delayed_io_signal(self):
+    #         self.set_io_signal(1, True)  # Set DO[1] to True
+    #         self.io_timer.cancel()  # Cancel the timer after one execution
 
 def main(args=None):
     rclpy.init(args=args)
